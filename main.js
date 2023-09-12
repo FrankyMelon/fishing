@@ -1,6 +1,14 @@
 const URL = "RHMZ/RHMZ.html";
 
-const header = document.getElementById('h1')
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+global.document = new JSDOM(URL).window.document;
+
+const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+
+
+
+const header = document.querySelector('h1')
 const table = document.getElementById('table')
 
 
@@ -14,8 +22,8 @@ const getQuotes = async () => {
     .then(function (html) {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
-
-                const dates = doc.querySelector('h1').innerText;
+                console.log(html)
+                // const dates = doc.querySelector('h1');
                 const rezults = doc.querySelector('#test');
 
                 // header.appendChild(dates);
