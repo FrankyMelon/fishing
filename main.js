@@ -1,18 +1,7 @@
 const URL = "RHMZ/RHMZ.html";
 
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-global.document = new JSDOM(URL).window.document;
-
-const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
-
-
-
 const header = document.querySelector('h1')
 const table = document.getElementById('table')
-
-
-// const rezults = document.getElementById('sadrzaj')
 
 const getQuotes = async () => {
     fetch(URL, {
@@ -22,17 +11,49 @@ const getQuotes = async () => {
     .then(function (html) {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
-                console.log(html)
-                // const dates = doc.querySelector('h1');
-                const rezults = doc.querySelector('#test');
-
-                // header.appendChild(dates);
-                table.appendChild(rezults);
+                catchData(doc)
             });
         })
     .catch(function (err) {
         console.warn('Something went wrong.', err);
     });
+}
+
+const catchData = (doc) => {
+
+    const dates = doc.querySelector('h1').innerText;
+    const rezults = doc.querySelector('#test');
+
+    // const cells = doc.querySelectorAll('table tbody tr');
+
+    const NS = doc.evaluate(
+        '//table',
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null,
+      );
+
+
+console.log(NS.textContent)
+
+    // NS.forEach(element => {
+    //     let cell = element.querySelector('td')
+        
+    //     console.log(cell)
+
+    //     if (cell.innerText.replace(/ /g, '') === "TISA") {
+    //         console.log('founded')
+    //         console.log(element)
+    //     }
+    // });
+
+// console.log(NS)
+
+
+    header.append(dates)
+    table.appendChild(rezults);
+
 }
 
 getQuotes()
